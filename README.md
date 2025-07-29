@@ -61,3 +61,11 @@ python3 infer_3d.py
 
 ------
 
+​	从 `nsys` 中可以看出，`DLA` 的推理略慢于纯 `cuda` 的推理版本，但是在 `jtop` 的显示中明显看到对于 `GPU` 资源的降低，由于 `Jetson AGX` 设备中只有小部分的算力分配给了 `cuda`。因此在能使用 `DLA` 的情况下尽量使用 `DLA`，才能最大程度的利用 `Jetson` 设备的硬件资源。
+
+![nsys_cuda](./docs/nsys_cuda.png)
+
+------
+
+![nsys_dla](./docs/nsys_dla.png)
+
