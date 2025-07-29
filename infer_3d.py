@@ -13,10 +13,10 @@
 
 from traffic_net import TrafficNet
 from pose3D_estimation import Pose3DEstimation
-from Math import *
-from Plotting import *
+from utils.Math import *
+from utils.Plotting import *
 
-import ClassAverages
+from utils import ClassAverages
 import cv2
 import numpy as np
 
@@ -129,7 +129,7 @@ def main(args=None):
     traffic_onnx_path = "resnet18_trafficcamnet_pruned.onnx"
     pose_onnx_path = "pose_3d.onnx"
     img = cv2.imread("./image/000175.png")
-    infer_onnx = Infer3DBox(traffic_onnx_path, pose_onnx_path, "calib_cam_to_cam.txt")
+    infer_onnx = Infer3DBox(traffic_onnx_path, pose_onnx_path, "config/calib_cam_to_cam.txt")
     detect_res = infer_onnx.infer(img)
     res_img = infer_onnx.cutImage(img, detect_res)
     cv2.imwrite("res_img.jpg",res_img)

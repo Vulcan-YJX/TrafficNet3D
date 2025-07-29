@@ -24,7 +24,7 @@ class ClassAverages:
     def __init__(self, classes=[]):
         self.dimension_map = {}
         self.filename = (
-            os.path.abspath(os.path.dirname(__file__)) + "/class_averages.txt"
+            os.path.abspath(os.path.dirname(__file__)) + "/../config/class_averages.txt"
         )
 
         if len(classes) == 0:  # eval mode

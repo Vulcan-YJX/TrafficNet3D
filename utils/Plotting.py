@@ -3,8 +3,8 @@ import numpy as np
 from enum import Enum
 import itertools
 
-from Calib import *
-from Math import *
+from .Calib import *
+from .Math import *
 
 
 class cv_colors(Enum):
