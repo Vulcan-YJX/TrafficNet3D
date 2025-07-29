@@ -1,0 +1,23 @@
+python3 infer.py -e model_bn.engine
+Input 'input_1:0' with shape [4, 3, 544, 960] and dtype float32
+Output 'output_cov/Sigmoid:0' with shape [4, 4, 34, 60] and dtype float32
+Output 'output_bbox/BiasAdd:0' with shape [4, 16, 34, 60] and dtype float32
+No input provided, running in benchmark mode
+Benchmark results include time for H2D and D2H memory copies
+Average Latency: 5.700 ms
+Average Throughput: 701.8 ips
+
+Finished Processing
+
+------------------------------------------------------
+
+python3 infer.py -e model_dla.engine
+Input 'input_1:0' with shape [4, 3, 544, 960] and dtype float32
+Output 'output_cov/Sigmoid:0' with shape [4, 4, 34, 60] and dtype float32
+Output 'output_bbox/BiasAdd:0' with shape [4, 16, 34, 60] and dtype float32
+No input provided, running in benchmark mode
+Benchmark results include time for H2D and D2H memory copies
+Average Latency: 10.036 ms
+Average Throughput: 398.6 ips
+
+Finished Processing
