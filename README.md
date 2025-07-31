@@ -11,6 +11,14 @@
 
 ![pose3d_flow](./docs/pose3d_flow.png)
 
+------
+
+> [!NOTE]
+>
+> 在不做深度估计的情况下很难获得较为准确的 3D 信息，只通过定位框的尺寸与实物尺寸的比例关系并不准确。因此在渲染时请与其他方式获得的深度信息进行绑定，可以是雷达、或相机的深度估计等。代码中的魔法数字是为了让显示变得直观，对定位误差的修正。
+
+![car3d](./docs/draw3d_cars.png)
+
 
 
 ## 基本信息
@@ -28,7 +36,7 @@
 ​	如果需要迁移至自己的硬件环境，请修改 `config` 文件中的 `calib_cam_to_cam.txt` 文件以适配实际的相机坐标系。示例图片为 `KITTI` 数据集中的测试样本。 
 
 ```bash
-pip install onnxruntime opencv-python
+pip install onnxruntime opencv-python vedo
 ```
 
 ​	运行测试脚本
