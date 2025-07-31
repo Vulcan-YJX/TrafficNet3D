@@ -19,6 +19,7 @@ from utils.Plotting import *
 from utils import ClassAverages
 import cv2
 import numpy as np
+from vedo import Plotter, load
 
 
 class Infer3DBox:
@@ -34,6 +35,10 @@ class Infer3DBox:
             proj_matrix = get_P(proj_matrix)
 
         self.proj_matrix = proj_matrix
+
+        car_model_path = "./config/car.obj"
+        self.plotter = Plotter()
+        self.car_model = load(car_model_path)
 
     def calc_theta_ray(self, img, box_2d, proj_matrix):
         """
@@ -63,12 +68,28 @@ class Infer3DBox:
 
         orient = alpha + theta_ray
 
+        # magic number: 3.0
+        locationXZY = np.array([location[0] * 3.0, location[2], location[1]])
+        car = self.car_model.clone()
+
+        # magic number: 0.5
+        dimensions[2] = dimensions[2] * 0.5
+        car.scale(dimensions)
+        car.rotate(orient * 180 / np.pi, axis=(0, 0, 1))
+        car.pos(locationXZY)
+        car_color = "gray"
+        car.color(car_color)
+        self.plotter += car
+
         if img_2d is not None:
             plot_2d_box(img_2d, box_2d)
 
         plot_3d_box(img, self.proj_matrix, orient, dimensions, location)  # 3d boxes
 
         return location
+
+    def show(self):
+        self.plotter.show(title="3D Car Visualization", axes=1)
 
     def generate_bins(self, bins):
         angle_bins = np.zeros(bins)
@@ -86,7 +107,7 @@ class Infer3DBox:
 
     def cutImage(self, frame, detect):
         [bboxes, labels] = self.traffic_net_infer.getBbox(frame, detect)
-        if(len(bboxes) > 0):
+        if len(bboxes) > 0:
             for i, bbox in enumerate(bboxes):
                 x_min = max(0, bbox[0])
                 y_min = max(0, bbox[1])
@@ -129,10 +150,13 @@ def main(args=None):
     traffic_onnx_path = "resnet18_trafficcamnet_pruned.onnx"
     pose_onnx_path = "pose_3d.onnx"
     img = cv2.imread("./image/000175.png")
-    infer_onnx = Infer3DBox(traffic_onnx_path, pose_onnx_path, "config/calib_cam_to_cam.txt")
+    infer_onnx = Infer3DBox(
+        traffic_onnx_path, pose_onnx_path, "config/calib_cam_to_cam.txt"
+    )
     detect_res = infer_onnx.infer(img)
     res_img = infer_onnx.cutImage(img, detect_res)
-    cv2.imwrite("res_img.jpg",res_img)
+    cv2.imwrite("res_img.jpg", res_img)
+
 
 if __name__ == "__main__":
     main()
